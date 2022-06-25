@@ -1,0 +1,130 @@
+/* Class containing left and right child of current
+node and key value*///O(n^2)
+import java.util.*;
+class Node {
+    int value;
+    Node left;
+    Node right;
+ 
+    Node(int value) {
+        this.value = value;
+        right = null;
+        left = null;
+    }
+}
+class INT
+{
+    static int d;
+    INT()
+    {
+        d = 0;
+    }
+}
+    
+public class BinaryTree {
+ 
+    Node root;
+ 
+    private Node addRecursive(Node node, int value) {
+    if (node == null) {
+        return new Node(value);
+    }
+    if (value < node.value){
+        if(node.left!=null){
+            node.left = addRecursive(node.left, value);
+        }else{
+            System.out.println("  Inserted " + value + " to left of "+ node.value);
+            node.left = new Node(value);
+        }
+    }else if(value > node.value){
+        if(node.right!=null){
+            node.right = addRecursive(node.right, value);
+        }else{
+            System.out.println("  Inserted " + value + " to right of "+ node.value);
+            node.right = new Node(value);
+        }
+    }else{
+        return node;
+    }
+    return node;
+    }
+
+
+    void add(int value) {
+        root = addRecursive(root, value);
+    }
+
+    void inOrderTraversal(Node n){
+     if (n != null)
+     {
+     	inOrderTraversal(n.left);
+     	System.out.println(n.value);
+     	inOrderTraversal(n.right);
+     }
+    }	
+    static boolean areIdentical(Node  root1, Node root2)
+    {
+    /* base cases */
+        if (root1 == null && root2 == null)
+            return true;
+     
+        if (root1 == null || root2 == null)
+            return false;
+     
+        /* Check if the data of both roots is
+        same and data of left and right
+        subtrees are also same */
+        return (root1.value == root2.value && areIdentical(root1.left, root2.left) && areIdentical(root1.right, root2.right));
+    }
+    
+    
+    static boolean isSubtree(Node T, Node S)
+    {
+        /* base cases */
+        if (S == null)
+            return true;
+     
+        if (T == null)
+            return false;
+     
+        /* Check the tree with root as current node */
+        if (areIdentical(T, S))
+            return true;
+     
+        /* If the tree with root as current
+        node doesn't match then try left
+        and right subtrees one by one */
+        return isSubtree(T.left, S) || isSubtree(T.right, S);
+    }
+    
+	public static void main(String[] args)
+	{
+		BinaryTree t = new BinaryTree();
+
+		t.add(3);
+		t.add(3);
+        t.add(10);
+        t.add(4);
+        t.add(6);
+        t.add(30);
+
+
+		t.inOrderTraversal(t.root);
+		BinaryTree s = new BinaryTree();
+
+
+        s.add(10);
+        s.add(4);
+        s.add(6);
+        s.add(30);
+
+
+		s.inOrderTraversal(s.root);
+		
+		if (isSubtree(t.root, s.root))
+        System.out.println( "Tree 2 is subtree of Tree 1");
+    else
+        System.out.println( "Tree 2 is not subtree of Tree 1");
+		//t.checktree(t.root);
+	}
+}

@@ -1,0 +1,150 @@
+import java.util.*; //O(n)---Idea of Threaded Binary Tree is to make inorder traversal faster and do it without stack and without recursion. 
+class Node {
+    int value;
+    Node left;
+    Node right;
+    boolean isThreaded;
+    
+    Node(int value) {
+        this.value = value;
+        right = null;
+        left = null;
+    }
+}
+
+    
+public class BinaryTree {
+ 
+    Node root;
+ 
+    private Node addRecursive(Node node, int value) {
+    if (node == null) {
+        return new Node(value);
+    }
+    if (value < node.value){
+        if(node.left!=null){
+            node.left = addRecursive(node.left, value);
+        }else{
+            System.out.println("  Inserted " + value + " to left of "+ node.value);
+            node.left = new Node(value);
+        }
+    }else if(value > node.value){
+        if(node.right!=null){
+            node.right = addRecursive(node.right, value);
+        }else{
+            System.out.println("  Inserted " + value + " to right of "+ node.value);
+            node.right = new Node(value);
+        }
+    }else{
+        return node;
+    }
+    return node;
+    }
+    void add(int value) {
+        root = addRecursive(root, value);
+    }
+    void inOrderTraversal(Node n){
+     if (n != null)
+     {
+     	inOrderTraversal(n.left);
+     	System.out.println(n.value);
+     	inOrderTraversal(n.right);
+     }
+    }	
+
+    // Helper function to put the Nodes in inorder into queue
+    void putToQueue(Node node, Queue<Node> q){
+        if (node == null)
+            return;
+        if (node.left != null)
+            putToQueue(node.left, q);
+        q.add(node);
+        if (node.right != null)
+            putToQueue(node.right, q);
+    }
+ 
+    // Function to traverse queue, and make tree threaded
+    void createThreadedUtil(Node node, Queue<Node> q){
+        if (node == null)
+            return;
+ 
+        if (node.left != null)
+            createThreadedUtil(node.left, q);
+        q.remove();
+ 
+        if (node.right != null)
+            createThreadedUtil(node.right, q);
+ 
+        // If right pointer is NULL, link it to the
+        // inorder successor and set 'isThreaded' bit.
+        else {
+            node.right = q.peek();
+            node.isThreaded = true;
+        }
+    }
+ 
+    // This function uses putToQueue() and
+    // createThreadedUtil() to convert a given binary tree
+    // to threaded tree.
+    void createThreaded(Node node){
+        // Create a queue to store inorder traversal
+        Queue<Node> q = new LinkedList<Node>();
+ 
+        // Store inorder traversal in queue
+        putToQueue(node, q);
+ 
+        // Link NULL right pointers to inorder successor
+        createThreadedUtil(node, q);
+    }
+ 
+    // A utility function to find leftmost node in a binary
+    // tree rooted with 'root'. This function is used in inOrder()
+    Node leftMost(Node node){
+        while (node != null && node.left != null)
+            node = node.left;
+        return node;
+    }
+ 
+    // Function to do inorder traversal of a threaded binary tree
+    void inOrder(Node node){
+        if (node == null)
+            return;
+ 
+        // Find the leftmost node in Binary Tree
+        Node cur = leftMost(node);
+ 
+        while (cur != null) {
+            System.out.print(" " + cur.value + " ");
+ 
+            // If this Node is a thread Node, then go to
+            // inorder successor
+            if (cur.isThreaded == true)
+                cur = cur.right;
+            else // Else go to the leftmost child in right subtree
+                cur = leftMost(cur.right);
+        }
+    }
+    
+    //**************************
+    
+	public static void main(String[] args)
+	{
+		BinaryTree t = new BinaryTree();
+
+		t.add(3);
+		t.add(3);
+        t.add(10);
+        t.add(4);
+        t.add(6);
+        t.add(30);
+
+
+		t.inOrderTraversal(t.root);
+
+
+		
+		t.createThreaded(t.root);
+        System.out.println("Inorder traversal of created threaded tree");
+        t.inOrder(t.root);
+	}
+}

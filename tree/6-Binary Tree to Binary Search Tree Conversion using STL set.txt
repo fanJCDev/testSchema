@@ -1,0 +1,121 @@
+/* Class containing left and right child of current
+node and key value*/
+import java.util.*;
+
+
+class Node {
+    int value;
+    Node left;
+    Node right;
+    Node(){}
+    Node(int value) {
+        this.value = value;
+        right = null;
+        left = null;
+    }
+}
+
+    
+public class BinaryTree {
+ 
+    Node root;
+    static Set<Integer> s = new HashSet<Integer>();
+    
+   
+    
+    static void inOrderTraversal(Node n){
+     if (n != null)
+     {
+     	inOrderTraversal(n.left);
+     	System.out.println(n.value);
+     	inOrderTraversal(n.right);
+     }
+    }
+    
+    
+    
+    
+    static void storeinorderInSet(Node node){
+        if (node == null)
+            return;
+        // visit the left subtree first
+        storeinorderInSet(node.left);
+     
+        // insertion takes order of O(logn) for sets
+        s.add(node.value);
+     
+        // visit the right subtree
+        storeinorderInSet(node.right);
+        
+    } // Time complexity = O(nlogn)
+
+    // A utility function to store inorder traversal of tree rooted with root in an array arr[]. Note that i is passed as reference
+    static void setToBST( Node node){
+        // base condition
+        if (node == null)
+            return;
+     
+        // first move to the left subtree and update items
+        setToBST( node.left);
+     
+        // iterator initially pointing to the
+        // beginning of set
+        // copying the item at beginning of
+        // set(sorted) to the tree.
+        node.value = s.iterator().next();
+     
+        // now erasing the beginning item from set.
+        s.remove(node.value);
+     
+        // now move to right subtree and update items
+        setToBST( node.right);
+ 
+    } // T(n) = O(nlogn) time
+    
+    static void binaryTreeToBST(Node node){
+        s.clear();
+     
+        // populating the set with the tree's
+        // inorder traversal data
+        storeinorderInSet(node);
+     
+        // now sets are by default sorted as
+        // they are implemented using self-
+        // balancing BST
+     
+        // copying items from set to the tree
+        // while inorder traversal which makes a BST
+        setToBST(node);
+    } // Time complexity = O(nlogn),
+// Auxiliary Space = O(n) for set.
+ 
+    static Node newNode(int data)
+    {
+    // dynamically allocating memory
+        Node temp = new Node();
+        temp. value = data;
+        temp.left = temp.right = null;
+        return temp;
+    }
+    
+	public static void main(String[] args)
+	{
+		
+		Node root = newNode(5);
+        root.left = newNode(7);
+        root.right = newNode(9);
+        root.right.left = newNode(10);
+        root.left.left = newNode(1);
+        root.left.right = newNode(6);
+        root.right.right = newNode(11);
+
+
+        
+		inOrderTraversal(root);
+		
+		binaryTreeToBST(root);
+        System.out.println( "Inorder traversal of BST is: " );
+      
+        inOrderTraversal(root);
+	}
+}

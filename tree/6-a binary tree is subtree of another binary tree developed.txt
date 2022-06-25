@@ -1,0 +1,206 @@
+/* Class containing left and right child of current//O(n)
+node and key value
+
+Inorder and Preorder traversals of the big tree or Tree2 are.
+Inorder and Preorder traversals of small tree or Tree1 are
+The Tree2 is not a subtree of Tree1, but inS[] and preS[] are subarrays of inT[] and preT[] respectively.
+
+The above algorithm can be extended to handle such cases by adding a special character whenever we encounter NULL in 
+inorder and preorder traversals. Thanks to Shivam Goel for suggesting this extension. 
+Following is the implementation of the above algorithm.
+
+Time Complexity: Inorder and Preorder traversals of Binary Tree take O(n) time. 
+The function strstr() can also be implemented in O(n) time using KMP string matching algorithm.
+Auxiliary Space: O(n)
+
+
+
+
+*/
+import java.util.*;
+
+
+class Node {
+    char value;
+    Node left;
+    Node right;
+ 
+    Node(char value) {
+        this.value = value;
+        right = null;
+        left = null;
+    }
+}
+class Passing {
+ 
+    int i;
+    int m = 0;
+    int n = 0;
+}
+    
+public class BinaryTree {
+ 
+    static Node root;
+    static Passing p = new Passing();
+    final static int MAX=100;
+ 
+    private Node addRecursive(Node node, char value) {
+        if (node == null) {
+            return new Node(value);
+        }
+        if (value < node.value){
+            if(node.left!=null){
+                node.left = addRecursive(node.left, value);
+            }else{
+                System.out.println("  Inserted " + value + " to left of "+ node.value);
+                node.left = new Node(value);
+            }
+        }else if(value > node.value){
+            if(node.right!=null){
+                node.right = addRecursive(node.right, value);
+            }else{
+                System.out.println("  Inserted " + value + " to right of "+ node.value);
+                node.right = new Node(value);
+            }
+        }else{
+            return node;
+        }
+        return node;
+    }
+    void add(char value) {
+        root = addRecursive(root, value);
+    }
+    void inOrderTraversal(Node n){
+     if (n != null)
+     {
+     	inOrderTraversal(n.left);
+     	System.out.println(n.value);
+     	inOrderTraversal(n.right);
+     }
+    }
+    
+    
+    
+    
+    static String strstr(String haystack, String needle){
+        if (haystack == null || needle == null) {
+            return null;
+        }
+        int hLength = haystack.length();
+        int nLength = needle.length();
+        if (hLength < nLength) {
+            return null;
+        }
+        if (nLength == 0) {
+            return haystack;
+        }
+        for (int i = 0; i <= hLength - nLength; i++) {
+            if (haystack.charAt(i) == needle.charAt(0)) {
+                int j = 0;
+                for (; j < nLength; j++) {
+                    if (haystack.charAt(i + j) != needle.charAt(j)) {
+                        break;
+                    }
+                }
+                if (j == nLength) {
+                    return haystack.substring(i);
+                }
+            }
+        }
+        return null;
+    }
+
+    // A utility function to store inorder traversal of tree rooted
+    // with root in an array arr[]. Note that i is passed as reference
+    static void storeInorder(Node node, char arr[], Passing i){
+        if (node == null) {
+            arr[i.i++] = '$';
+            return;
+        }
+        storeInorder(node.left, arr, i);
+        arr[i.i++] = node.value;
+        storeInorder(node.right, arr, i);
+    }
+ 
+    // A utility function to store preorder traversal of tree rooted
+    // with root in an array arr[]. Note that i is passed as reference
+    static void storePreOrder(Node node, char arr[], Passing i){
+        if (node == null) {
+            arr[i.i++] = '$';
+            return;
+        }
+        arr[i.i++] = node.value;
+        storePreOrder(node.left, arr, i);
+        storePreOrder(node.right, arr, i);
+    }
+ 
+    /* This function returns true if S is a subtree of T, otherwise false */
+    static boolean isSubtree(Node T, Node S){
+        /* base cases */
+        if (S == null) {
+            return true;
+        }
+        if (T == null) {
+            return false;
+        }
+ 
+        // Store Inorder traversals of T and S in inT[0..m-1] and inS[0..n-1] respectively
+        char inT[] = new char[100];
+        String op1 = String.valueOf(inT);
+        char inS[] = new char[100];
+        String op2 = String.valueOf(inS);
+        storeInorder(T, inT, p);
+        storeInorder(S, inS, p);
+        inT[p.m] = '\0';
+        inS[p.m] = '\0';
+ 
+        // If inS[] is not a substring of preS[], return false
+        if (strstr(op1, op2) != null) {
+            return false;
+        }
+ 
+        // Store Preorder traversals of T and S in inT[0..m-1] and inS[0..n-1] respectively
+        p.m = 0;
+        p.n = 0;
+        char preT[] = new char[100];
+        char preS[] = new char[100];
+        String op3 = String.valueOf(preT);
+        String op4 = String.valueOf(preS);
+        storePreOrder(T, preT, p);
+        storePreOrder(S, preS, p);
+        preT[p.m] = '\0';
+        preS[p.n] = '\0';
+ 
+        // If inS[] is not a substring of preS[], return false Else return true
+        return (strstr(op3, op4) != null);
+    }
+    
+	public static void main(String[] args)
+	{
+		BinaryTree t = new BinaryTree();
+		t.add('a');
+		t.add('b');
+        	t.add('c');
+        	t.add('d');
+        	t.add('e');
+        
+		t.inOrderTraversal(t.root);
+		
+		System.out.println("*************************");
+		
+		BinaryTree s = new BinaryTree();
+        	s.add('a');
+        	s.add('b');
+        	s.add('c');
+        	s.add('d');
+        
+		s.inOrderTraversal(s.root);
+		
+		if (isSubtree(t.root, s.root)) {
+            System.out.println("Yes, S is a subtree of T");
+        }
+        else {
+            System.out.println("No, S is not a subtree of T");
+        }
+	}
+}

@@ -1,0 +1,126 @@
+/* Class containing left and right child of current
+node and key value*/
+import java.util.*;
+class Node {
+    int value;
+    Node left;
+    Node right;
+ 
+    Node(int value) {
+        this.value = value;
+        right = null;
+        left = null;
+    }
+}
+class INT
+{
+    static int d;
+    INT()
+    {
+        d = 0;
+    }
+}
+    
+public class BinaryTree {
+ 
+    Node root;
+ 
+    private Node addRecursive(Node node, int value) {
+    if (node == null) {
+        return new Node(value);
+    }
+    if (value < node.value){
+        if(node.left!=null){
+            node.left = addRecursive(node.left, value);
+        }else{
+            System.out.println("  Inserted " + value + " to left of "+ node.value);
+            node.left = new Node(value);
+        }
+    }else if(value > node.value){
+        if(node.right!=null){
+            node.right = addRecursive(node.right, value);
+        }else{
+            System.out.println("  Inserted " + value + " to right of "+ node.value);
+            node.right = new Node(value);
+        }
+    }else{
+        return node;
+    }
+    return node;
+    }
+
+
+    void add(int value) {
+        root = addRecursive(root, value);
+    }
+
+    void inOrderTraversal(Node n){
+     if (n != null)
+     {
+     	inOrderTraversal(n.left);
+     	System.out.println(n.value);
+     	inOrderTraversal(n.right);
+     }
+    }	
+    boolean isBalancedUtil(Node root, INT maxh, INT minh){
+     
+        // Base case
+        if (root == null)
+        {
+            maxh.d = minh.d = 0;
+            return true;
+        }
+         
+        // To store max and min heights of left subtree
+        INT lmxh=new INT(), lmnh=new INT();
+         
+        // To store max and min heights of right subtree
+        INT rmxh=new INT(), rmnh=new INT();
+     
+        // Check if left subtree is balanced,
+        // also set lmxh and lmnh
+        if (isBalancedUtil(root.left, lmxh, lmnh) == false)
+            return false;
+     
+        // Check if right subtree is balanced,
+        // also set rmxh and rmnh
+        if (isBalancedUtil(root.right, rmxh, rmnh) == false)
+            return false;
+     
+        // Set the max and min heights
+        // of this node for the parent call
+        maxh.d = Math.max(lmxh.d, rmxh.d) + 1;
+        minh.d = Math.min(lmnh.d, rmnh.d) + 1;
+     
+        // See if this node is balanced
+        if (maxh.d <= 2*minh.d)
+            return true;
+     
+        return false;
+    }
+    boolean isBalanced(Node root){
+        INT maxh=new INT(), minh=new INT();
+        return isBalancedUtil(root, maxh, minh);
+    }
+    
+    void checktree(Node node){
+        System.out.println(isBalanced(root) ?"Balanced" : "Not Balanced");
+    }
+    
+	public static void main(String[] args)
+	{
+		BinaryTree tree = new BinaryTree();
+
+		tree.add(10);
+		tree.add(5);
+     
+        tree.add(100);
+        tree.add(50);
+        tree.add(150);
+        tree.add(40);
+
+
+		tree.inOrderTraversal(tree.root);
+		tree.checktree(tree.root);
+	}
+}

@@ -1,0 +1,8 @@
+void inOrderTraversal(TreeNode node)
+{
+ if (node != null){
+	System.out.println(node.key);
+ 	preOrderTraversal(node.left);
+ 	preOrderTraversal(node.right);
+ }
+}
