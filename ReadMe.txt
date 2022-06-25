@@ -1,0 +1,10 @@
+👋 Hi, I’m @fanJCDev ==> my name is ali
+- 👀 I’m interested in in technology, if I found an interesting problem somewhere, I tried to solve it and code it and checked the result of the code,I was also trying to optimize it in terms of time and memory, I also discovered a passion for Artificial intelligence, that’s why I decided to do my graduation project in machine vision, I analyzed, designed and implemented a license plate recognition project.  
+- 🌱 Java is one of the languages that I started learning by myself by taking some online courses and my study, due to my curiosity to solve problem-solving, and learn new techniques. I’m currently working on my skills, such as communication and teamwork skills and technical skills in Java programming. I am someone who is motivated and willing to learn every day, whenever I have spare time, I start a challenge in the Hacker rank site and challenge myself in problem-solving, Java, and SQL questions. 
+- 💞️ I’m looking to collaborate on professional team that is always dynamic in the software industry, I would like to find my place, to grow
+- 📫 How to reach me ...
+
+<!---
+fanJCDev/fanJCDev is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+You can click the Preview link to take a look at your changes.
+--->
