@@ -1,0 +1,60 @@
+import java.util.*;
+public class GFG
+{
+static boolean isEditDistanceOne(String s1, String s2)
+{
+	int stl1 = s1.length(), stl2 = s2.length();
+
+	if (Math.abs(stl1 - stl2) > 1)
+		return false;
+
+	int count = 0; // Count of edits
+    
+	int i = 0, j = 0;
+	while (i < stl1 && j < stl2)
+	{
+		if (s1.charAt(i) != s2.charAt(j))
+		{
+			if (count == 1)
+				return false;
+
+			if (stl1 > stl2)
+				i++;
+			else if (stl1< stl2)
+				j++;
+			else 
+			{
+				i++;
+				j++;
+			}
+			count++;
+		}
+
+		else
+		{
+			i++;
+			j++;
+		}
+	}
+	if (i < stl1 || j < stl2)
+		count++;
+
+	return count == 1;
+}
+static void checker(String str1, String str2)
+{
+    if(isEditDistanceOne(str1, str2))
+		System.out.print(str1+","+str2+"-> Yes\n");
+	else
+		System.out.print(str1+","+str2+"-> no\n");
+}
+
+public static void main (String[] args)
+{
+
+	checker("pale", "ple");
+    checker("pales", "pale");
+    checker("pale", "bale");
+    checker("pale", "bake"); 
+}
+}

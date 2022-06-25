@@ -1,0 +1,21 @@
+import java.util.*;
+public class HelloWorld{
+
+     public static void main(String []args){
+         
+        String[] arr = new String[] {"Ahmad","Aali","Reza","Ali","Ali","Blehdad","Ali"};
+        
+        LinkedHashSet<String> lhs = new LinkedHashSet<String>( Arrays.asList(arr) );
+        System.out.println( Arrays.toString(arr) );
+        for(String str : arr){
+            if(str.substring(1, 2).equals("l"))
+             lhs.remove(str);
+        }
+        
+        System.out.println( lhs );
+        String[] newarr = lhs.toArray(new String[] {});
+        System.out.println( Arrays.toString(newarr) );
+        
+
+     }
+}

@@ -1,0 +1,29 @@
+import java.util.*;
+public class MyClass {
+    public static void main(String args[])  {
+        String one = "Hello";
+        String two = " World";
+
+        System.out.println(new StringBuilder(one).append(two).toString());
+        
+        String[] strings = new String[]{"one", "two", "three", "four", "five"};
+    
+        String result = null;
+        for(String string : strings) {
+            result = result + string;
+        }//O(xn^2)
+        //**************************
+        //m. StringBuilder simply creates a resizable array of all the strings, copying them back to a string only when necessary.
+        result = "";
+        StringBuilder temp  = new StringBuilder();
+	//result = new StringBuilder(result).append(string).toString();//bad BP
+	//This code avoids both the StringBuilder and String object instantiations inside the loop,
+	//and therefore also avoids the two times copying of the characters,
+	//first into the StringBuilder and then into a String again.
+        for(String string : strings) {
+            temp.append(string+" ");
+        }
+        result=temp.toString();
+        System.out.println(result);
+    }
+}

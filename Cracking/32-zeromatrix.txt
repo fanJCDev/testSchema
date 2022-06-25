@@ -1,0 +1,80 @@
+import java.util.*;
+public class Test {
+    //*************************************************************************************
+  static public class Coordinate{
+   int x;
+   int y;
+   
+   public Coordinate(int xCoor, int yCoor){
+      x = xCoor;
+      y = yCoor;
+   }
+}
+
+static int[][] zeroMatrix(int[][] matrix){
+   HashSet<Coordinate> h = new HashSet<Coordinate>();
+   for(int x=0; x<matrix.length; x++){
+      for(int y=0; y<matrix[0].length; y++){
+         if(matrix[x][y] == 0) h.add(new Coordinate(x,y));
+      }
+   }
+
+   for(Coordinate c : h){
+       System.out.println(c.x + " " +c.y);
+       for(int x =0; x<matrix.length; x++){
+         matrix[x][c.y] = 0;
+       }
+       for(int y =0; y<matrix[0].length; y++){
+         matrix[c.x][y] = 0;
+       }
+   }
+   return matrix;
+}  
+    
+    //*************************************************************************************
+    
+    
+	public static void setZero(int matrix[][]){
+		int m = matrix.length;
+		int n = matrix[0].length;
+		boolean zeroM[] = new boolean[m];
+		boolean zeroN[] = new boolean[n];
+		for(int i = 0; i < m; i ++){
+			for(int j = 0; j < n; j++){
+				if(matrix[i][j] == 0){
+					zeroM[i] = true;
+					zeroN[j] = true;
+				}
+			}
+		}
+		for(int i = 0; i < m; i ++){
+			for(int j = 0; j < n; j++){
+				if(zeroM[i] || zeroN[j])
+					matrix[i][j] = 0;
+			}
+		}
+	}
+
+
+	public static void main(String args[]){
+		int matrix[][] = {{0,1,2,3,4,5},{0,1,2,3,4,5},{0,1,2,3,4,5},{0,1,2,3,4,5},{0,1,2,3,4,5},{0,1,2,3,4,5}};
+		int ne[][] = new int[matrix.length][matrix[0].length];
+		
+		System.out.println(Arrays.deepToString(matrix));
+		System.out.println("row = " + matrix.length + " column = " + matrix[0].length);
+        ne=zeroMatrix(matrix);
+		setZero(matrix);
+		System.out.println("After setZero:");
+		for(int i = 0; i < matrix.length;i++)
+		{
+			for(int j = 0; j < matrix[0].length; j++)
+			{
+				System.out.print(matrix[i][j] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println(Arrays.deepToString(ne));
+
+
+	}
+}

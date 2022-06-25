@@ -1,0 +1,67 @@
+import java.util.*;
+
+public class Main {
+public static void rotation( int [][] matrix, int n )
+        {
+            int start = 0, end = n - 1;
+            int temp = 0;
+            //save left vertical line to temp and rotate 90 degree line by line
+            while( start < end ){
+                for( int i = 0; i < end - start; i++ )
+                {
+                    temp = matrix[ start ][ start + i ];
+                    matrix[ start ][ start + i ] = matrix[ end - i ][ start ];
+                    matrix[ end - i ][ start ] = matrix[ end ][ end - i ];
+                    matrix[ end ][ end - i ] = matrix[ start + i ][ end ];
+                    matrix[ start + i ][ end ] = temp;
+                }
+                start++;
+                end--;
+            }
+            System.out.println(Arrays.deepToString(matrix));
+        }
+static String compress(String str)
+{
+    if(str.length()<2)
+    	{
+    	  return str;  
+    	}
+    	else
+    	{
+        	char[] c1 = str.toCharArray();
+            Arrays.sort(c1);//o(nlogn)
+    	    HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+    	    int i,j,count;
+    	    for(i=0;i<c1.length;)
+    	    {
+    	        count=1;
+                for(j=i+1;j<c1.length;j++)
+    	        {
+    	            if(c1[i]==c1[j])
+    	            {
+    	                count++;
+    	            }
+    	        }
+                map.put(c1[i],count);
+                i=count+i;
+    	    }
+            String temp = "";
+            
+            for (Map.Entry<Character, Integer> entry : map.entrySet()) 
+                temp+= entry.getKey() + "" + entry.getValue().toString();
+    	    return temp;
+    	}   
+    
+}
+  public static void main(String[] args) {
+        int[][] a = {   
+            {1,  2,  3,  4},
+            {5,  6,  7,  8},
+            {9,  10, 11, 12},
+            {13, 14, 15, 16}
+        };
+        System.out.println(Arrays.deepToString(a));
+        rotation(a,a[0].length);
+    	}
+}
+

@@ -1,0 +1,46 @@
+public class Program
+{
+//Calling perm O(n * n!) times (as an upper bound) and each call takes O(n) time, the total runtime will not exceed 
+//O(n^2 * n!).
+    
+    public static char[] Swap(char[] list, int i , int k){
+        if (list.length == 0)
+            return list;
+        if (list[i] == list[k]) return list;
+
+        char temp = list[i];
+        list[i] = list[k];
+        list[k] = temp;
+        return list;
+    }
+
+    public static void GetPer(char[] list)
+    {
+        int x = list.length - 1;
+        GetPer(list, 0, x);
+    }
+
+    private static void GetPer(char[] list, int k, int m)
+    {
+        if (k == m)
+        {
+            for(char c : list)
+                System.out.print(c);
+            System.out.println(",");
+        }
+        else
+            for (int i = k; i <= m; i++)
+            {
+                   Swap(list,k,i);
+                   GetPer(list, k + 1, m);
+                   Swap(list,k, i);
+            }
+    }
+
+    public static void main(String[] args)
+    {
+        String str = "a";
+        char[] arr = str.toCharArray();
+        GetPer(arr);
+    }
+}

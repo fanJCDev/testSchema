@@ -1,0 +1,127 @@
+import java.util.*;
+public class HelloWorld{
+    static int MAX=100000;
+    public static int countPairsWithDiffKwithHash(int arr[], int n, int k){//O(n)
+        int count = 0;  // Initialize count
+        HashMap<Integer, Boolean> map = new HashMap<Integer, Boolean>();
+        for(int i=0; i<20;++i) {
+            map.put(i, false);
+        }
+        //System.out.println(map);
+        for(int i : arr) {
+            map.put(i, true);
+        }
+        //System.out.println(map);
+        for (int i = 0; i < n; i++)
+        {
+            int x = arr[i];
+            if (x - k >= 0 && map.get(x - k))
+                count++;
+            if (x + k < MAX && map.get(x + k))
+                count++;
+            map.put(x,false);
+        }
+        return count;
+    }
+    public static int countPairsWithDiffKwithHash1(int arr[], int n, int k){//O(n)
+        int count = 0;  // Initialize count
+        boolean hashmap[] = new boolean[MAX];
+
+        for (int i = 0; i < n; i++)
+            hashmap[arr[i]] = true;
+
+
+        //System.out.println(map);
+        for (int i = 0; i < n; i++)
+        {
+            int x = arr[i];
+            if (x - k >= 0 && hashmap[x - k])
+                count++;
+            if (x + k < MAX && hashmap[x + k])
+                count++;
+            hashmap[x]=false;
+        }
+        return count;
+    }
+/*
+Sort the array arr
+Take two pointers, l, and r, both pointing to 1st element
+Take the difference arr[r] – arr[l]
+If value diff is K, increment count and move both pointers to next element
+if value diff > k, move l to next element
+if value diff < k, move r to next element
+return count
+*/
+    static int countPairsWithDiffKwithSort(int arr[], int n, int k){
+        int count = 0;
+        Arrays.sort(arr); // Sort array elements O(nlogn)
+     
+        int l = 0;
+        int r = 0;
+        while(r < n)
+        {
+            if(arr[r] - arr[l] == k)
+            {
+                count++;
+                l++;
+                r++;
+            }
+            else if(arr[r] - arr[l] > k)
+                l++;
+            else // arr[r] - arr[l] < sum
+                r++;
+        }
+        return count;
+    }
+    //******************************
+    static int BS(int[] arr, int X, int low)  {
+        int high = arr.length - 1;
+        int ans = arr.length;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            if(arr[mid] >= X) {
+                ans = mid;
+                high = mid - 1;
+            }
+            else low = mid + 1;
+        }
+        return ans;
+    }
+      static int countPairsWithDiffKWithBS(int[] arr, int N, int k) {//O(N * log(N))
+        int count = 0;
+        Arrays.sort(arr);
+        for(int i = 0 ; i < N ; ++i) {
+            int X = BS(arr, arr[i] + k, i + 1);
+		//Binary Search for the first occurrence of arr[i] + k in the 
+		//sub array arr[i+1, N-1], let this index be ‘X’.If arr[i] + k is not found, 
+		//return the index of the first occurrence of the value greater than arr[i] + k.
+            if(X != N) {
+                int Y = BS(arr, arr[i] + k + 1, i + 1);
+		//Repeat steps a and b to search for the first occurrence of arr[i] + k + 1, let this index be ‘Y’.
+                count += Y - X;
+            }
+        }
+ 
+        return count;
+    }
+    //******************************
+     public static void main(String []args){
+
+        Integer[] arr = new Integer[] {1, 7,5, 9, 2, 12, 3,1, 7,5, 9, 2, 12, 3};
+        System.out.println( Arrays.toString(arr) );
+        
+        LinkedHashSet<Integer> lhs = new LinkedHashSet<Integer>( Arrays.asList(arr) );
+        System.out.println( lhs );
+        
+        Integer[] newarr = lhs.toArray(new Integer[] {});
+        int[] intArray = Arrays.stream(newarr).mapToInt(Integer::intValue).toArray();
+        
+        System.out.println( Arrays.toString(intArray) );
+        int n = intArray.length;
+        int k = 2;
+        
+        System.out.println("====" + countPairsWithDiffKwithSort(intArray, n, k));
+        System.out.println("====" + countPairsWithDiffKWithBS(intArray, n, k));
+	System.out.println("====" + countPairsWithDiffKwithHash(intArray, n, k));
+     }
+}

@@ -1,0 +1,38 @@
+import java.util.Arrays;
+ 
+public class RemoveDuplicateExample
+{
+    public static void main(String[] args) throws CloneNotSupportedException 
+    {
+        int[] origArray = new int[] { 1, 1, 2, 3, 3, 3, 4, 5, 6, 6, 6, 7, 8};
+
+        System.out.println(Arrays.toString(origArray));
+ 
+        int[] tempArray = removeDuplicates(origArray);
+
+        System.out.println(Arrays.toString(tempArray));
+    }
+ 
+    private static int[] removeDuplicates(int[] origArray) {
+ 
+        int[] tempArray = new int[origArray.length];
+        int k = 0;
+        int d = 0;
+        for (int i = 0; i < origArray.length - 1; i++) 
+        {
+            int currentElement = origArray[i];
+            if (currentElement != origArray[i+1]) {
+                tempArray[d++] = currentElement;
+            }else{k++;}
+        }
+         
+        tempArray[d++] = origArray[origArray.length-1];
+	int[] tempArray1 = new int[origArray.length-k];
+        for (int i = 0; i < origArray.length-k; i++) 
+	{
+		tempArray1[i]=tempArray[i];
+	}
+    	System.arraycopy(tempArray, 0, tempArray1, 0, tempArray1.length);
+        return tempArray1;
+    }
+}

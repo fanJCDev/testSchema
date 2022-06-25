@@ -1,0 +1,30 @@
+o(log n) for travers+delete+insert
+What is the worst case time complexity for search, insert and delete operations in a general Binary Search Tree? O(n)
+What are the worst case time complexities of searching in binary tree, BST and AVL tree respectively? As discussed, 
+Search operation in binary tree and BST have worst case time complexity of O(n). 
+
+
+all AVL tree has worst case time complexity of O(logn).
+
+Algorithm Average Worst case Space O(n) O(n) Search O(1) O(n) Insert O(1) O(n) Delete O(1) O(n)
+
+HashMap
+HashMap has complexity of O(1) for insertion and lookup.
+
+HashMap allows one null key and multiple null values.
+
+HashMap does not maintain any order.
+
+TreeMap
+TreeMap has complexity of O(logN) for insertion and lookup.
+
+TreeMap does not allow null key but allow multiple null values.
+
+TreeMap maintains order. It stores keys in sorted and ascending order.
+
+LinkedHashMap
+LinkedHashMap has complexity of O(1) for insertion and lookup.
+
+LinkedHashMap allows one null key and multiple null values.
+
+LinkedHashMap maintains order in which key-value pairs are inserted.

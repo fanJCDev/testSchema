@@ -1,0 +1,83 @@
+// Java program to check whether two strings are
+// Permutations of each other
+import java.util.*;
+public class GfG {
+//************************************************************
+static int NO_OF_CHARS = 256;
+//************************************************************//O(nlogn)
+static boolean arePermutation(String str1, String str2)
+{
+	// Get lenghts of both strings
+	int n1 = str1.length();
+	int n2 = str2.length();
+
+	// If length of both strings is not same,
+	// then they cannot be Permutation
+	if (n1 != n2)
+	return false;
+	char ch1[] = str1.toCharArray();
+	char ch2[] = str2.toCharArray();
+
+	// Sort both strings
+	Arrays.sort(ch1);
+	Arrays.sort(ch2);
+
+	// Compare sorted strings
+	for (int i = 0; i < n1; i++)
+	if (ch1[i] != ch2[i])
+		return false;
+	return true;
+}
+//************************************************************//O(n)
+static boolean arePermutation1(String str1, String str2)
+{
+        char chr1[] = str1.toCharArray();
+        char chr2[] = str2.toCharArray();
+        // Create 2 count arrays and initialize
+        // all values as 0
+        int count1[] = new int [NO_OF_CHARS];
+        Arrays.fill(count1, 0);
+        int count2[] = new int [NO_OF_CHARS];
+        Arrays.fill(count2, 0);
+        int i;
+  
+        // For each character in input strings,
+        // increment count in the corresponding
+        // count array
+        for (i = 0; i <chr1.length && i < chr2.length ;
+                                                 i++)
+        {
+            count1[chr1[i]]++;
+            count2[chr2[i]]++;
+        }
+  
+        // If both strings are of different length.
+        // Removing this condition will make the program
+        // fail for strings like "aaca" and "aca"
+        if (chr1.length != chr2.length)
+            return false;
+  
+        // Compare count arrays
+        for (i = 0; i < NO_OF_CHARS; i++)
+            if (count1[i] != count2[i])
+                return false;
+  
+        return true;
+    }
+//************************************************************
+static void checker(String str1, String str2)
+{
+    if (arePermutation1(str1, str2))
+	    System.out.println("Yes");
+	else
+	    System.out.println("No");
+}
+//************************************************************
+public static void main(String[] args)
+{
+	String str1 = "abc";
+	String str2 = "bac";
+	checker(str1,str2);
+
+}
+}

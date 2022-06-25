@@ -1,0 +1,73 @@
+import java.util.*;
+public class HelloWorld{
+    static final int MAX_CHAR = 256;
+    //************************************    
+    static boolean uniqueCharacters(String str)//Time Complexity: O(n log n)
+    {
+        char[] chArray = str.toCharArray();
+        Arrays.sort(chArray);
+ 
+        for (int i = 0; i < chArray.length - 1; i++) {
+            if (chArray[i] != chArray[i + 1])
+                continue;
+            else
+                return false;
+        }
+        return true;
+    }
+    //************************************ aditional data structure
+    static boolean uniqueCharacters1(String str)//Time Complexity: O(n)
+    {
+        if (str.length() > MAX_CHAR)
+            return false;
+ 
+        boolean[] chars = new boolean[MAX_CHAR];
+        Arrays.fill(chars, false);
+        for (int i = 0; i < str.length(); i++) {
+            int index = (int)str.charAt(i);
+            if (chars[index] == true)
+                return false;
+            chars[index] = true;
+        }
+
+        return true;
+    }
+    //********************************************
+    static boolean uniqueCharacters2(String str)
+    {
+        List<Character> list = new ArrayList<>();
+        Set<Character> set = new HashSet<>();
+        char[] characters = str.toCharArray();
+        
+        for(char c: characters) list.add(c);
+        System.out.println(list);
+        set.addAll(list);
+        if (list.size()==set.size())
+            return true;
+                else
+            return false;
+    }
+    //********************************************
+    static void checker(String a)
+    {
+        if (uniqueCharacters2(a))
+            System.out.println("The String " + a + " has all unique characters");
+        else
+            System.out.println("The String " + a + " has duplicate characters");
+    }
+    //************************************
+     public static void main(String []args){
+        System.out.println("Hello World");
+        String str = "andyrhui34*";
+        char[] characters = str.toCharArray();
+        
+        System.out.println(str);
+        Arrays.sort(characters);
+        System.out.println(characters);
+        
+        checker(str);
+        str="aa";
+        checker(str);
+     }
+}
+

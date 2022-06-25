@@ -1,0 +1,94 @@
+// Java implementation of decimal to octal
+// conversion with minimum use of
+// arithmetic operators
+/*
+Perform decimal to binary conversion without using arithmetic operators of the given number n. Refer this post. Let this number be bin.
+Convert the binary number bin to octal. Refer this post.
+*/
+
+import java.util.*;
+
+class GFG
+{
+
+// function for decimal to binary conversion
+// without using arithmetic operators
+static String decToBin(int n)
+{
+	if (n == 0)
+		return "0";
+	
+	// to store the binary equivalent of decimal
+	String bin = "";
+	while (n > 0)
+	{
+		// to get the last binary digit of the
+		// number 'n' and accumulate it at the
+		// beginning of 'bin'
+		bin = ((n & 1) == 0 ? '0' : '1') + bin;
+		
+		// right shift 'n' by 1
+		n >>= 1;
+	}
+	
+	// required binary number
+	return bin;
+}
+
+// Function to find octal equivalent of binary
+static String convertBinToOct(String bin)
+{
+	int l = bin.length();
+		
+	// add min 0's in the beginning to make
+	// string length divisible by 3
+	for (int i = 1; i <= (3 - l % 3) % 3; i++)
+		bin = '0' + bin;
+		
+	// create map between binary and its
+	// equivalent octal code
+	Map<String,
+		Character> bin_oct_map = new HashMap<>();
+	bin_oct_map.put("000", '0');
+	bin_oct_map.put("001", '1');
+	bin_oct_map.put("010", '2');
+	bin_oct_map.put("011", '3');
+	bin_oct_map.put("100", '4');
+	bin_oct_map.put("101", '5');
+	bin_oct_map.put("110", '6');
+	bin_oct_map.put("111", '7');
+		
+	int i = 0;
+	String octal = "";	
+	while (true)
+	{
+		// one by one extract from left, substring
+		// of size 3 and add its octal code
+		octal += bin_oct_map.get(bin.substring(i, i + 3));
+		i += 3;
+		if (i == bin.length())
+			break;	
+	}
+		
+	// required octal number
+	return octal;
+}
+
+// function to find octal equivalent of decimal
+static String decToOctal(int n)
+{
+	// convert decimal to binary
+	String bin = decToBin(n);
+	
+	// convert binary to octal
+	// required octal equivalent of decimal
+	return convertBinToOct(bin);
+}
+
+// Driver Code
+public static void main(String[] args)
+{
+	int n = 151;
+	System.out.println(decToOctal(n));
+}
+}

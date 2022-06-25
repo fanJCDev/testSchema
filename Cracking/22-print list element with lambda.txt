@@ -1,0 +1,50 @@
+import java.util.*;
+public class MyClass {
+    public static void main(String args[]) {
+       
+        List<String> otherList = new ArrayList<>();
+        
+        
+        otherList.add("element1");
+        otherList.add("element3");
+        otherList.add("element4");
+        otherList.add("element2");
+	otherList.add("element4");
+        
+
+        System.out.println(otherList);
+        Set<String> set = new HashSet<>();
+        set.addAll(otherList);
+        System.out.println(set);
+        
+	String[] array = set.toArray(new String[0]);
+        System.out.println(Arrays.deepToString(array));
+        
+	List<String> list = (List<String>) Arrays.asList(array);
+        System.out.println(list);
+        //*************************************************
+        Iterator<String> iterator = list.iterator();
+        while(iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+        //*************************************************
+        for(Object element : list) {
+            System.out.print(element+", ");
+        }
+        System.out.print("\n");
+	//*************************************************
+        list.stream().forEach(a-> {System.out.print(a+", ");});
+	System.out.print("\n");
+        //*************************************************
+      	list.forEach((e) -> {
+      		System.out.print(e + "+ ");
+    	});
+	System.out.print("\n");
+	//*************************************************
+    	list.forEach(System.out::println);
+	System.out.print("\n");
+    	//*************************************************
+    	list.stream().forEach(System.out::println);
+	System.out.print("\n");
+    }
+}
