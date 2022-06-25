@@ -1,0 +1,121 @@
+import java.util.*;
+/*
+Time Complexity: O(n) on average (assuming that hash table access time is O(1) on average).
+In general, Merge Sort is the best-suited sorting algorithm for sorting linked lists efficiently. 
+1) Sort the elements using Merge Sort. We will soon be writing a post about sorting a linked list. O(nLogn) 
+2) Remove duplicates in linear time using the algorithm for removing duplicates in sorted Linked List. O(n) 
+Please note that this method doesn’t preserve the original order of elements.
+Time Complexity: O(nLogn)
+*/
+public class LinkedList
+{
+    static class Node
+    {
+        String data;
+        Node next;
+        Node(String key)
+        {
+            data=key;
+            next=null;
+        }
+    }
+    Node head;
+
+    public static LinkedList insert(LinkedList list, String key)
+    {
+        /*
+        ye node jadidi misazim
+        node badiye node_jadido be null mibandim
+        age list ma khali bashe:
+            sare listemono be node jadid vasl mikonim
+        ama ageh liste ma khali nabood pas bayad be tahe list ezafe konim:
+            node_curr ro be sare list vasl mikonim
+            ta zamani ke node_curr be tahe list naresideh:
+                node_curr ro be node badi node_curr vasl mikonim
+            hala ke be tah residim:
+                node_jadid ro be node badi node_curr ke be null vasl bood vasl mikonim
+                node badi node jadidam ke otomat be null vasle
+        list ro ke be nude_curr vasl bod ro barmigardonim
+            
+        */
+        Node new_nod = new Node(key);
+        new_nod.next=null;
+        if(list.head==null){
+            list.head=new_nod;
+        }else{
+            Node curr = list.head;
+            while(curr.next!=null){
+                curr=curr.next;
+            }
+            curr.next=new_nod;
+        }
+        return list;
+    }
+    public static void print(LinkedList list)
+    {
+        /*
+            node_curr ro misazim ke be sare list vasl bashe
+            ta zamani ke node_curr be null nareside:
+                data ye node_curr ro chaap mikonim
+                node_curr ro yedone mibarim jolo
+            ye khte khali mizanim
+        */
+        Node curr = list.head;
+        while(curr!=null){
+            if(curr.next==null){
+                System.out.print(curr.data);
+                break;
+            }
+            System.out.print(curr.data+"->");
+            curr=curr.next;
+        }
+        System.out.println();
+    }
+    
+//*******************************************************
+    static void removeDuplicate(Node head)
+    {
+        // Hash to store seen values
+        HashSet<String> hs = new HashSet<>();
+     
+        /* Pick elements one by one */
+        Node current = head;
+        Node prev = null;
+        String subject="";
+        while (current != null)
+        {
+            subject = current.data;
+             
+             // If current value is seen before
+            if (hs.contains(subject)) {
+                prev.next = current.next;
+            } else {
+                hs.add(subject);
+                prev = current;
+            }
+            current = current.next;
+        }
+ 
+    }
+    
+    //***************************************************************************
+    public static void main(String[] args){
+        LinkedList list = new LinkedList();
+        for(int i =1; i<=10;++i)
+        {
+            list=insert(list,(i+""));
+        }
+        for(int i =1; i<=10;++i)
+        {
+            list=insert(list,(i+""));
+        }
+        print(list);
+
+
+        removeDuplicate(list.head);print(list);
+        
+    }
+}
+
+
+//**********************************************************************************

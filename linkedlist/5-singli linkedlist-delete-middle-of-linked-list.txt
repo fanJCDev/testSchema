@@ -1,0 +1,131 @@
+import java.util.*;
+/*
+Complexity Analysis: 
+
+Time Complexity: O(n). 
+Only one traversal of the linked list is needed
+Auxiliary Space: O(1). 
+As no extra space is needed.
+
+The above solution requires two traversals of the linked list.
+The middle node can delete using one traversal.
+The idea is to use two pointers, slow_ptr, and fast_ptr.
+Both pointers start from the head of list. When fast_ptr reaches the end, slow_ptr reaches middle.
+This idea is same as the one used in method 2 of this post.
+The additional thing in this post is to keep track of the previous middle so the middle node can be deleted.
+Below is the implementation.  
+*/
+public class LinkedList
+{
+    static class Node
+    {
+        String data;
+        Node next;
+        Node(String key)
+        {
+            data=key;
+            next=null;
+        }
+    }
+    Node head;
+
+    public static LinkedList insert(LinkedList list, String key)
+    {
+        /*
+        ye node jadidi misazim
+        node badiye node_jadido be null mibandim
+        age list ma khali bashe:
+            sare listemono be node jadid vasl mikonim
+        ama ageh liste ma khali nabood pas bayad be tahe list ezafe konim:
+            node_curr ro be sare list vasl mikonim
+            ta zamani ke node_curr be tahe list naresideh:
+                node_curr ro be node badi node_curr vasl mikonim
+            hala ke be tah residim:
+                node_jadid ro be node badi node_curr ke be null vasl bood vasl mikonim
+                node badi node jadidam ke otomat be null vasle
+        list ro ke be nude_curr vasl bod ro barmigardonim
+            
+        */
+        Node new_nod = new Node(key);
+        new_nod.next=null;
+        if(list.head==null){
+            list.head=new_nod;
+        }else{
+            Node curr = list.head;
+            while(curr.next!=null){
+                curr=curr.next;
+            }
+            curr.next=new_nod;
+        }
+        return list;
+    }
+    public static void print(LinkedList list)
+    {
+        /*
+            node_curr ro misazim ke be sare list vasl bashe
+            ta zamani ke node_curr be null nareside:
+                data ye node_curr ro chaap mikonim
+                node_curr ro yedone mibarim jolo
+            ye khte khali mizanim
+        */
+        Node curr = list.head;
+        while(curr!=null){
+            if(curr.next==null){
+                System.out.print(curr.data);
+                break;
+            }
+            System.out.print(curr.data+"->");
+            curr=curr.next;
+        }
+        System.out.println();
+    }
+//**********************************************************************************
+static void deleteMid(Node head)
+    {
+        // Base cases
+        if (head == null)
+            return ;
+        if (head.next == null) {
+            return ;
+        }
+ 
+        // Initialize slow and fast pointers
+        // to reach middle of linked list
+        Node slow_ptr = head;
+        Node fast_ptr = head;
+ 
+        // Find the middle and previous of middle.
+        Node prev = null;
+ 
+        // To store previous of slow_ptr
+        while (fast_ptr != null && fast_ptr.next != null) {
+            fast_ptr = fast_ptr.next.next;
+            prev = slow_ptr;
+            slow_ptr = slow_ptr.next;
+        }
+ 
+        // Delete the middle node
+        prev.next = slow_ptr.next;
+
+    }
+//**********************************************************************************
+    
+    public static void main(String[] args){
+        LinkedList list = new LinkedList();
+        for(int i =1; i<10;++i)
+        {
+            list=insert(list,(i+""));
+        }
+        print(list);
+
+
+	    deleteMid(list.head);
+ 
+        System.out.println("Linked List after deletion of middle");
+        print(list);
+        
+    }
+}
+
+
+//**********************************************************************************

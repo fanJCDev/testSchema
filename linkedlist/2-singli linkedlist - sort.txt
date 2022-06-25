@@ -1,0 +1,214 @@
+import java.util.*;
+/*
+Time Complexity: O(n*log n)
+Merge sort is often preferred for sorting a linked list. The slow random-access performance of a linked list makes 
+some other algorithms (such as quicksort) perform poorly, and others (such as heapsort) completely impossible. 
+Let the head be the first node of the linked list to be sorted and headRef be the pointer to head. 
+Note that we need a reference to head in MergeSort() as the below implementation changes next links to sort the 
+linked lists (not data at the nodes), so the head node has to be changed if the data at the original head is not the 
+smallest value in the linked list. 
+MergeSort(headRef)
+1) If the head is NULL or there is only one element in the Linked List 
+    then return.
+2) Else divide the linked list into two halves.  
+      FrontBackSplit(head, &a, &b); /* a and b are two halves */
+3) Sort the two halves a and b.
+      MergeSort(a);
+      MergeSort(b);
+4) Merge the sorted a and b (using SortedMerge() discussed here) 
+   and update the head pointer using headRef.
+     *headRef = SortedMerge(a, b);
+*/
+public class LinkedList
+{
+    static class Node
+    {
+        String data;
+        Node next;
+        Node(String key)
+        {
+            data=key;
+            next=null;
+        }
+    }
+    Node head;
+
+    public static LinkedList insert(LinkedList list, String key)
+    {
+        /*
+        ye node jadidi misazim
+        node badiye node_jadido be null mibandim
+        age list ma khali bashe:
+            sare listemono be node jadid vasl mikonim
+        ama ageh liste ma khali nabood pas bayad be tahe list ezafe konim:
+            node_curr ro be sare list vasl mikonim
+            ta zamani ke node_curr be tahe list naresideh:
+                node_curr ro be node badi node_curr vasl mikonim
+            hala ke be tah residim:
+                node_jadid ro be node badi node_curr ke be null vasl bood vasl mikonim
+                node badi node jadidam ke otomat be null vasle
+        list ro ke be nude_curr vasl bod ro barmigardonim
+            
+        */
+        Node new_nod = new Node(key);
+        new_nod.next=null;
+        if(list.head==null){
+            list.head=new_nod;
+        }else{
+            Node curr = list.head;
+            while(curr.next!=null){
+                curr=curr.next;
+            }
+            curr.next=new_nod;
+        }
+        return list;
+    }
+    public static void print(LinkedList list)
+    {
+        /*
+            node_curr ro misazim ke be sare list vasl bashe
+            ta zamani ke node_curr be null nareside:
+                data ye node_curr ro chaap mikonim
+                node_curr ro yedone mibarim jolo
+            ye khte khali mizanim
+        */
+        Node curr = list.head;
+        while(curr!=null){
+            if(curr.next==null){
+                System.out.print(curr.data);
+                break;
+            }
+            System.out.print(curr.data+"->");
+            curr=curr.next;
+        }
+        System.out.println();
+    }
+    
+    public static LinkedList remove(LinkedList list, String key)
+    {
+        /*
+          node_hazer be sar list ma eshareh mikone va node_ghable be hichi
+          agar node_hazer null nabood va dadeye node_hazer oni bood ke mikhahim 
+          pas:
+            dadye ma sare list boodeh va ma sare list ro pak mikonim
+            sare list ma be node bade node_hazer eshareh mikoneh
+            ye payam chaap mikonim
+            list ro bargardonim
+          ama yani bayad begardim ta dadeh ro peyda konim:
+            tazamanike(node_hazer null nabashe va dadeye node_hazer oni ke mikahim nabashe):
+                node_ghable be node_hazer eshare mikoneh
+                node_haser be node badei node_hazer eshareh mikoneh
+            halacheck mikonim
+                    age node_hazer  null nashode bashe:
+                        yani yaftim
+                        ye payam chaap mikonim
+                        node badi node_ghabli be node badi node_hazer eshareh mikone
+                    ama age node_hazer mosavi null shod:
+                        yani peyda nashod
+                        ye payam chaap mikonim
+            list ra bargardonim
+                
+        */
+        Node curr = list.head, per = null;
+        if(curr!=null && (curr.data).equals(key)){
+            list.head = curr.next;
+            System.out.println("Found at top");
+            return list;
+        }
+        while(curr!=null && (!(curr.data).equals(key))){
+            per = curr;
+            curr=curr.next;
+        }
+        if(curr!=null){
+            per.next=curr.next;
+            System.out.println("Found...");
+        }
+        if(curr==null){
+            System.out.println("not found");
+        }
+        return list;
+    }
+    //***************************************************************************
+    public static Node sortedMerge(Node a, Node b)
+    {
+        Node result = null;
+        /* Base cases */
+        if (a == null)
+            return b;
+        if (b == null)
+            return a;
+ 
+        /* Pick either a or b, and recur */
+        int res = (a.data).compareTo(b.data);
+        if (res<=0) {
+            result = a;
+            result.next = sortedMerge(a.next, b);
+        }
+        else {
+            result = b;
+            result.next = sortedMerge(a, b.next);
+        }
+        return result;
+    }
+    
+    //****************
+    public static Node getMiddle(Node head)
+    {
+        if (head == null)
+            return head;
+ 
+        Node slow = head, fast = head;
+ 
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+    //***************
+    public static Node sorting(Node h)
+    {
+        // Base case : if head is null
+        if (h == null || h.next == null) {
+            return h;
+        }
+ 
+        // get the middle of the list
+        Node middle = getMiddle(h);
+        Node nextofmiddle = middle.next;
+ 
+        // set the next of middle node to null
+        middle.next = null;
+ 
+        // Apply mergeSort on left list
+        Node left = sorting(h);
+ 
+        // Apply mergeSort on right list
+        Node right = sorting(nextofmiddle);
+ 
+        // Merge the left and right lists
+        Node sortedlist = sortedMerge(left, right);
+        return sortedlist;
+    }
+
+    //***************************************************************************
+    public static void main(String[] args){
+        LinkedList list = new LinkedList();
+        for(int i =1; i<=10;++i)
+        {
+            list=insert(list,(i+""));
+        }
+        for(int i =10; i>=1;--i)
+        {
+            list=insert(list,(i+""));
+        }
+        print(list);
+ 
+        list.head = list.sorting(list.head);System.out.println("sort:  ");print(list);
+
+        
+    }
+}
+
+
+//**********************************************************************************

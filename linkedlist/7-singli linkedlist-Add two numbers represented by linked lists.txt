@@ -1,0 +1,189 @@
+import java.util.*;
+/*
+Complexity Analysis: 
+
+Time Complexity: O(m + n), where m and n are numbers of nodes in first and second lists respectively. 
+The lists need to be traversed only once.
+Space Complexity: O(m + n). 
+A temporary linked list is needed to store the output number
+Approach: Traverse both lists and One by one pick nodes of both lists and add the values. 
+If the sum is more than 10 then make carry as 1 and reduce sum. If one list has more elements than the other then 
+consider the remaining values of this list as 0. 
+
+The steps are: 
+
+
+Traverse the two linked lists from start to end
+Add the two digits each from respective linked lists.
+If one of the lists has reached the end then take 0 as its digit.
+Continue it until both the end of the lists.
+If the sum of two digits is greater than 9 then set carry as 1 and the current digit as sum % 10
+*/
+public class LinkedList
+{
+    static class Node
+    {
+        int data;
+        Node next;
+        Node(int key)
+        {
+            data=key;
+            next=null;
+        }
+    }
+    Node head;
+
+    public static LinkedList insert(LinkedList list, int key)
+    {
+        /*
+        ye node jadidi misazim
+        node badiye node_jadido be null mibandim
+        age list ma khali bashe:
+            sare listemono be node jadid vasl mikonim
+        ama ageh liste ma khali nabood pas bayad be tahe list ezafe konim:
+            node_curr ro be sare list vasl mikonim
+            ta zamani ke node_curr be tahe list naresideh:
+                node_curr ro be node badi node_curr vasl mikonim
+            hala ke be tah residim:
+                node_jadid ro be node badi node_curr ke be null vasl bood vasl mikonim
+                node badi node jadidam ke otomat be null vasle
+        list ro ke be nude_curr vasl bod ro barmigardonim
+            
+        */
+        Node new_nod = new Node(key);
+        new_nod.next=null;
+        if(list.head==null){
+            list.head=new_nod;
+        }else{
+            Node curr = list.head;
+            while(curr.next!=null){
+                curr=curr.next;
+            }
+            curr.next=new_nod;
+        }
+        return list;
+    }
+    public static void print(LinkedList list)
+    {
+        /*
+            node_curr ro misazim ke be sare list vasl bashe
+            ta zamani ke node_curr be null nareside:
+                data ye node_curr ro chaap mikonim
+                node_curr ro yedone mibarim jolo
+            ye khte khali mizanim
+        */
+        Node curr = list.head;
+        while(curr!=null){
+            System.out.print(curr.data);
+            curr=curr.next;
+        }
+        System.out.println();
+    }
+//******************************************************************************
+    static Node reverse(Node node)
+    {
+        Node prev = null;
+        Node current = node;
+        Node next = null;
+        while (current != null) {
+            next = current.next;//1
+            current.next = prev;//2
+            prev = current;//tasbit 2
+            current = next;//tasbit 1
+        }
+        node = prev;
+        return node;
+    }
+//**********************************************************************************
+public static Node addTwoLists(Node first, Node second)
+    {
+        Node res = null;
+        Node prev = null;
+        Node temp = null;
+        int carry = 0, sum;
+        
+        // while both lists exist
+        while (first != null || second != null) {
+            // Calculate value of next
+            // digit in resultant list.
+            // The next digit is sum
+            // of following things
+            // (i)  Carry
+            // (ii) Next digit of first
+            // list (if there is a next digit)
+            // (ii) Next digit of second
+            // list (if there is a next digit)
+            sum = carry + (first != null ? first.data : 0)
+                  + (second != null ? second.data : 0);
+ 
+            // update carry for next calulation
+            
+            carry = (sum >= 10) ? 1 : 0;
+ 
+            // update sum if it is greater than 10
+            sum = sum % 10;
+ 
+            // Create a new node with sum as data
+            temp = new Node(sum);
+            
+            // if this is the first node then set it as head of the resultant list
+            if (res == null) {
+                res = temp;
+            }
+ 
+            // If this is not the first node then connect it to the rest.
+            else {
+                prev.next = temp;
+            }
+ 
+            // Set prev for next insertion
+            prev = temp;
+ 
+            // Move first and second pointers to next nodes
+            if (first != null) {
+                first = first.next;
+            }
+            if (second != null) {
+                second = second.next;
+            }
+        }
+ 
+        if (carry > 0) {
+            temp.next = new Node(carry);
+        }
+ 
+        // return head of the resultant list
+        return res;
+    }
+//**********************************************************************************
+    
+    public static void main(String[] args){
+        LinkedList list1 = new LinkedList();
+        LinkedList list2 = new LinkedList();
+        LinkedList list3 = new LinkedList();
+            list1=insert(list1,1);
+            list1=insert(list1,9);
+            list1=insert(list1,5);
+            
+            
+            list2=insert(list2,1);
+            list2=insert(list2,9);
+            list2=insert(list2,5);
+            
+            
+
+            list3.head= addTwoLists(list1.head, list2.head);
+            System.out.println("this is our first number : ");
+            list1.head=reverse(list1.head);
+            print(list1);
+            System.out.println("this is our first number : ");
+            list2.head=reverse(list2.head);
+            print(list2);
+            System.out.println("======================");
+            list3.head=reverse(list3.head);
+            print(list3);
+    }
+}
+
+
+//**********************************************************************************

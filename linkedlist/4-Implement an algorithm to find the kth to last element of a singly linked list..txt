@@ -1,0 +1,111 @@
+import java.util.*;
+public class LinkedList
+{
+    static class Node
+    {
+        String data;
+        Node next;
+        Node(String key)
+        {
+            data=key;
+            next=null;
+        }
+    }
+    Node head;
+
+    public static LinkedList insert(LinkedList list, String key)
+    {
+        /*
+        ye node jadidi misazim
+        node badiye node_jadido be null mibandim
+        age list ma khali bashe:
+            sare listemono be node jadid vasl mikonim
+        ama ageh liste ma khali nabood pas bayad be tahe list ezafe konim:
+            node_curr ro be sare list vasl mikonim
+            ta zamani ke node_curr be tahe list naresideh:
+                node_curr ro be node badi node_curr vasl mikonim
+            hala ke be tah residim:
+                node_jadid ro be node badi node_curr ke be null vasl bood vasl mikonim
+                node badi node jadidam ke otomat be null vasle
+        list ro ke be nude_curr vasl bod ro barmigardonim
+            
+        */
+        Node new_nod = new Node(key);
+        new_nod.next=null;
+        if(list.head==null){
+            list.head=new_nod;
+        }else{
+            Node curr = list.head;
+            while(curr.next!=null){
+                curr=curr.next;
+            }
+            curr.next=new_nod;
+        }
+        return list;
+    }
+    public static void print(LinkedList list)
+    {
+        /*
+            node_curr ro misazim ke be sare list vasl bashe
+            ta zamani ke node_curr be null nareside:
+                data ye node_curr ro chaap mikonim
+                node_curr ro yedone mibarim jolo
+            ye khte khali mizanim
+        */
+        Node curr = list.head;
+        while(curr!=null){
+            if(curr.next==null){
+                System.out.print(curr.data);
+                break;
+            }
+            System.out.print(curr.data+"->");
+            curr=curr.next;
+        }
+        System.out.println();
+    }
+    
+//*******************************************************
+    static int nodeLength(Node n)
+    {
+    	int counter = 0;
+    	Node temp = n;
+    	while(temp != null){
+    		counter++;
+    		temp = temp.next;
+    	}
+    	return counter;
+    }
+    
+    static Node kthNode(Node n, int k)
+    {
+        Node temp = n;
+    	int depth = nodeLength(n);
+    	int correct = depth - k;
+    	for(int i=correct; i>0; i--){
+    		temp = temp.next;
+    	}
+    	return temp;
+    }
+    
+    //***************************************************************************
+    public static void main(String[] args){
+        LinkedList list = new LinkedList();
+        for(int i =1; i<=10;++i)
+        {
+            list=insert(list,(i+""));
+        }
+        for(int i =1; i<=10;++i)
+        {
+            list=insert(list,(i+""));
+        }
+        print(list);
+
+        int n=3;
+        Node ret = kthNode(list.head,n);
+        System.out.println();
+        System.out.println("the desired data for "+n+"th node to the last of linkedlist: "+ret.data);        
+    }
+}
+
+
+//**********************************************************************************

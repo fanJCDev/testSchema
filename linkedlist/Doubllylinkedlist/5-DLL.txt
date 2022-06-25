@@ -1,0 +1,130 @@
+import java.util.*;
+public class DLLst{
+     class Node{
+        String data;
+        Node perv;
+        Node next;
+         Node(String key){
+            data=key;
+            perv=null;
+            next=null;
+        }
+    }
+    Node head;
+    public void push(String key){
+        Node newN = new Node(key);
+        newN.next=head;
+        newN.perv=null;
+        if(head!=null)
+            head.perv=newN;
+        head=newN;
+    }
+    public void append(String key){
+        
+        
+        Node newN = new Node(key);
+        Node curr = head;
+        newN.next=null;
+        
+        if(head==null){
+            newN.perv=null;
+            head=newN;
+            return;
+        }
+        while(curr.next!=null){
+            curr=curr.next;
+        }
+        curr.next=newN;
+        newN.perv=curr;
+    }
+    public void addFront(Node curr, String key){
+        if(curr==null){
+            System.out.println("not exist");
+            return;
+        }
+        Node newN=new Node(key);
+        newN.next=curr.next;
+        curr.next=newN;
+        newN.perv=curr;
+        if(newN.next!=null){
+            newN.next.perv=newN;
+        }
+    }
+    public void print(Node node){
+        Node curr=null;
+        while(node!=null){
+            if(node.next==null){
+                System.out.print(node.data+"->null");
+                break;
+            }else{
+            System.out.print(node.data+"->");
+            curr=node;
+            node=node.next;
+            }
+        }
+        System.out.println();
+        while(curr!=null){
+            if(curr.perv==null){
+                System.out.print(curr.data+"<-null");break;
+            }else{
+                System.out.print(curr.data+"<-");
+                curr=curr.perv;
+            }
+        }
+        System.out.println();
+    }
+    public void deleteNode(Node del)
+    {
+ 
+        // Base case
+        if (head == null || del == null) {
+            return;
+        }
+ 
+        // If node to be deleted is head node
+        if (head == del) {
+            head = del.next;
+        }
+ 
+        // Change next only if node to be deleted
+        // is NOT the last node
+        if (del.next != null) {
+            del.next.perv = del.perv;
+        }
+ 
+        // Change prev only if node to be deleted
+        // is NOT the first node
+        if (del.perv != null) {
+            del.perv.next = del.next;
+        }
+ 
+        // Finally, free the memory occupied by del
+        return;
+    }
+    public static void main(String[] args){
+        DLLst dll = new DLLst();
+  
+        // Insert 6. So linked list becomes 6->NULL
+        dll.append((6+""));
+  
+        // Insert 7 at the beginning. So .. linked list becomes 7->6->NULL
+        dll.push((7+""));
+  
+        // Insert 1 at the beginning. So 
+        // linked list becomes 1->7->6->NULL
+        dll.push((1+""));
+  
+        // Insert 4 at the end. So linked 
+        // list becomes 1->7->6->4->NULL
+        dll.append((4+""));
+  
+        // Insert 8, after 7. So linked 
+        // list becomes 1->7->8->6->4->NULL
+        dll.addFront(dll.head.next, (8+""));
+  
+        System.out.println("Created DLL is: ");
+        dll.print(dll.head);
+        dll.deleteNode(dll.head);
+        dll.print(dll.head);
+    }
+}
