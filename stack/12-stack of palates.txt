@@ -1,0 +1,175 @@
+import java.util.ArrayList;
+import java.util.Stack;
+
+
+public class Test{
+
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		int capacity_per_substack = 5;
+		setOfStacks set = new setOfStacks(capacity_per_substack);
+		for (int i = 0; i < 45; i++) {
+			set.push(i + " ");
+		}
+		for (int i = 0; i < 6; i++) {
+			System.out.println("Popped " + set.popAt(0));
+			System.out.println("Popped " + set.popAt(3));
+			System.out.println("Popped " + set.popAt(7));
+		}
+	}
+}
+
+class setOfStacks {
+	ArrayList<myStack> al = new ArrayList<myStack>();
+	int threshhold;
+	int listSize;
+	int size;
+
+	public setOfStacks(int c) {
+		// TODO Auto-generated constructor stub
+		threshhold = c;
+		myStack ms = new myStack(c);
+		al.add(ms);
+		listSize = 1;
+		size = 0;
+	}
+
+	public String popAt(int stackID) {
+		// TODO Auto-generated method stub
+		myStack iStack=al.get(stackID);
+		if(iStack==null||iStack.isEmpty())
+			return null;
+		String ret=iStack.pop();
+		shiftOne(stackID);
+		return ret;
+	}
+
+	private void shiftOne(int stackID) {
+		// TODO Auto-generated method stub
+		while(stackID<listSize-1&&al.get(stackID+1)!=null&&!al.get(stackID+1).isEmpty()){
+			myStack stack1=al.get(stackID);
+			myStack stack2=al.get(stackID+1);
+			String s=stack2.popFirst();
+			stack1.push(s);
+			stackID++;
+		}
+	}
+
+	public void push(String val) {
+		// TODO Auto-generated method stub
+		myStack lastStack = al.get(listSize - 1);
+		if (lastStack.isFull()) {
+			myStack newStack = new myStack(threshhold);
+			newStack.push(val);
+			al.add(newStack);
+			listSize++;
+		} else {
+			lastStack.push(val);
+		}
+		size++;
+	}
+
+	public String pop() {
+		myStack lastStack = al.get(listSize - 1);
+		if (listSize > 0 && lastStack.isEmpty()) {
+			al.remove(listSize - 1);
+			listSize--;
+			if (listSize > 0)
+				lastStack = al.get(listSize - 1);
+		}
+		if (listSize == 0)
+			return null;
+		return lastStack.pop();
+	}
+
+	public String peek() {
+		myStack lastStack = al.get(listSize - 1);
+		if (listSize > 0 && lastStack.isEmpty()) {
+			al.remove(listSize - 1);
+			listSize--;
+			if (listSize > 0)
+				lastStack = al.get(listSize - 1);
+		}
+		if (listSize == 0)
+			return null;
+		return lastStack.peek();
+	}
+}
+
+class myStack {
+	myNode head;
+	myNode tail;
+	int size = 0;
+	int capacity;
+
+	myStack(int c) {
+		head = new myNode();
+		tail = new myNode();
+		capacity = c;
+	}
+
+	public String popFirst() {
+		// TODO Auto-generated method stub
+		if(head==null||size==0)
+			return null;
+		String ret=head.val;
+		head=head.next;
+		size--;
+		if(head!=null){
+			head.previous=null;
+		}
+		return ret;
+	}
+
+	public String peek() {
+		// TODO Auto-generated method stub
+		return tail.val;
+	}
+
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return size == 0;
+	}
+
+	public String pop() {
+		// TODO Auto-generated method stub
+		size--;
+		String ret = tail.val;
+		tail = tail.previous;
+		if (tail != null)
+			tail.next = null;
+		return ret;
+	}
+
+	public void push(String val) {
+		// TODO Auto-generated method stub
+		myNode newNode = new myNode(val);
+		if (size == 0)
+			tail = head = newNode;
+		else {
+			tail.next = newNode;
+			newNode.previous = tail;
+			tail = newNode;
+		}
+		size++;
+	}
+
+	public boolean isFull() {
+		// TODO Auto-generated method stub
+		return size == capacity;
+	}
+}
+
+class myNode {
+	myNode previous = null;
+	myNode next = null;
+	String val = "";
+
+	myNode(String s) {
+		val = s;
+	}
+
+	public myNode() {
+		// TODO Auto-generated constructor stub
+	}
+}
