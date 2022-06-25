@@ -1,0 +1,75 @@
+import java.util.*;
+public class MyQueue
+{
+    static class QueueNode
+    {
+         int data;
+         QueueNode next;
+        
+        public QueueNode(int data)
+        {
+            this.data = data;
+        }
+        public void displayData()
+        {
+            System.out.println("**>" + data);
+        }
+    }
+    
+     QueueNode first;
+     QueueNode last;
+    
+    public void enqueue(int item)
+    {
+        QueueNode t = new QueueNode(item);
+        if (last != null)
+        {
+            last. next = t;
+        }
+        last = t;
+        if (first == null)
+        {
+            first = last;
+        }
+    }
+    public int dequeue()
+    {
+        if (first == null) throw new NoSuchElementException();
+        int data = first.data;
+        first = first.next;
+        if (first == null)
+        {
+            last = null;
+        }
+        return data;
+    }
+    public int peek()
+    {
+        if (first == null) throw new NoSuchElementException();
+        return first.data;
+    }
+    public boolean isEmpty()
+    {
+        return first == null;
+    }
+    public void displayList()
+    {
+        QueueNode current = first;
+        while(current != null)
+        {
+            current.displayData();
+            current = current.next;
+        }
+    }
+    public static void main(String[] args)
+    {
+        MyQueue t = new MyQueue();
+        t.enqueue(5);
+        t.enqueue(6);
+        t.enqueue(7);
+        t.enqueue(1);
+        t.displayList();
+        System.out.println(t.dequeue());
+        t.displayList();
+    }
+}
