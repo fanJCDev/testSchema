@@ -1,0 +1,160 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Node{
+    int d;
+    Node l;
+    Node r;
+
+    Node(int d, Node l, Node r){
+        this.d = d;
+        this.l = l;
+        this.r = r;
+    }
+}
+class Result {
+    static void inorder(Node cur, List<Integer> list){
+        if(cur == null) return;
+
+        inorder(cur.l, list);
+        list.add(cur.d);
+        inorder(cur.r, list);
+    }
+
+    static void swap(Node cur, int depth, int k){
+        if(cur == null) return;
+
+        if (depth >=k && depth % k == 0 ) {
+            Node t = cur.l;
+            cur.l = cur.r;
+            cur.r = t;
+        }
+
+        swap(cur.l, depth+1, k);
+        swap(cur.r, depth+1, k);
+    }
+    /*
+     * Complete the 'swapNodes' function below.
+     *
+     * The function is expected to return a 2D_INTEGER_ARRAY.
+     * The function accepts following parameters:
+     *  1. 2D_INTEGER_ARRAY indexes
+     *  2. INTEGER_ARRAY queries
+     */
+
+    public static List<List<Integer>> swapNodes(List<List<Integer>> indexes, List<Integer> queries) {
+        int numOfNodes = indexes.size();
+        int numOfQueries = queries.size();
+        int[][] result = new int[numOfQueries][numOfNodes];
+        Node root = new Node(1, null, null);
+        Node cur = root;
+
+        Queue<Node> nodes = new LinkedList<Node>();
+        nodes.offer(cur);
+
+        int N = 0;
+        while(N < numOfNodes){
+            int leftData = indexes.get(N).get(0);//[0];
+            int rightData = indexes.get(N).get(1);
+            cur = nodes.poll();
+            
+            cur.l = (leftData==-1)? null: new Node(leftData, null, null);
+            cur.r = (rightData == -1)? null : new Node(rightData, null, null);
+
+            if(cur.l != null && cur.l.d != -1) nodes.offer(cur.l);
+            if(cur.r != null && cur.r.d != -1) nodes.offer(cur.r);
+            N++;
+        }
+
+        for(int i=0; i<numOfQueries; i++){
+            swap(root, 1, queries.get(i));
+            List<Integer> list = new ArrayList<>();
+            inorder(root, list);
+            result[i] = list.stream().mapToInt(v -> v).toArray();
+        }
+        //List<List<Integer>> lot = Arrays.asList(result);
+        //Arrays.stream(result).map(Arrays::asList).collect(Collectors.toList()); 
+        //Arrays.stream(result).flatMap(Arrays::stream).collect(Collectors.toList());
+        
+        List<List<Integer>> lot = Arrays.
+                //Convert the 2d array into a stream.
+                stream(result).
+                //Map each 1d array (internalArray) in 2d array to a List.
+                map(
+                        //Stream all the elements of each 1d array and put them into a list of Integer.
+                        internalArray -> Arrays.stream(internalArray).boxed().collect(Collectors.toList()
+                    )
+                //Put all the lists from the previous step into one big list.
+                ).collect(Collectors.toList());
+
+        return lot;
+
+    }
+
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<List<Integer>> indexes = new ArrayList<>();
+
+        IntStream.range(0, n).forEach(i -> {
+            try {
+                indexes.add(
+                    Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                        .map(Integer::parseInt)
+                        .collect(toList())
+                );
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        int queriesCount = Integer.parseInt(bufferedReader.readLine().trim());
+
+        List<Integer> queries = IntStream.range(0, queriesCount).mapToObj(i -> {
+            try {
+                return bufferedReader.readLine().replaceAll("\\s+$", "");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        })
+            .map(String::trim)
+            .map(Integer::parseInt)
+            .collect(toList());
+
+        List<List<Integer>> result = Result.swapNodes(indexes, queries);
+
+        result.stream()
+            .map(
+                r -> r.stream()
+                    .map(Object::toString)
+                    .collect(joining(" "))
+            )
+            .map(r -> r + "\n")
+            .collect(toList())
+            .forEach(e -> {
+                try {
+                    bufferedWriter.write(e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}

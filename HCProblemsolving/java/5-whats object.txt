@@ -1,0 +1,29 @@
+import java.io.*;
+import java.util.*;
+
+public class Solution {
+    public String test(Object obj) {
+        String r="";
+        switch(obj) { 
+            case Integer i -> r="Int:"+i;
+            case String s -> r="String:"+s;
+            case Double d -> r="Double: "+d;
+            };
+            return r;
+        }
+
+    public static void main(String[] args) {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT. Your class should be named Solution. */
+        Scanner scan = new Scanner(System.in);
+        int i = scan.nextInt();Integer oi = Integer.valueOf(i);
+        double d = scan.nextDouble();Double od = d;
+        scan.nextLine();
+        String s = scan.nextLine();
+        
+        
+        System.out.println(test(s));
+        System.out.println(test(od));
+        System.out.println(test(oi));
+        scan.close();
+    }
+}

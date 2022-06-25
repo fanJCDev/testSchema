@@ -1,0 +1,34 @@
+import java.util.*;
+class Parser{
+    private static final Map<Character, Character> brackets = new HashMap<Character, Character>();
+    static {
+        brackets.put('[', ']');
+        brackets.put('{', '}');
+        brackets.put('(', ')');
+    }
+    boolean checkParenthesesBalance(String str){
+                final Stack<Character> stack = new Stack<Character>();
+                for (int i = 0; i < str.length(); i++) {
+                    if (brackets.containsKey(str.charAt(i))) {
+                        stack.push(str.charAt(i));
+                    } else if (stack.empty() || (str.charAt(i) != brackets.get(stack.pop()))) {
+                        return false;
+                    }
+                }
+                return stack.empty();
+        }
+}
+class Solution{
+	
+	public static void main(String []argh)
+	{
+        Parser X=new Parser();
+		Scanner sc = new Scanner(System.in);
+		
+		while (sc.hasNext()) {
+			String input=sc.next();
+            System.out.println(X.checkParenthesesBalance(input));
+		}
+		
+	}
+}

@@ -1,0 +1,48 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Scanner;
+
+class Solution{
+
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        while(in.hasNext()){
+            String IP = in.next();
+            System.out.println(IP.matches(new MyRegex().pattern));
+        }
+
+    }
+}
+
+class MyRegex {
+        // Regex for digit from 0 to 255.
+        /*
+        where: 
+        \d represents digits in regular expressions, same as [0-9]
+        \\d{1, 2} catches any one or two-digit number
+        (0|1)\\d{2} catches any three-digit number starting with 0 or 1.
+        2[0-4]\\d catches numbers between 200 and 249.
+        25[0-5] catches numbers between 250 and 255.
+        Match the string with the Regex. In Java, this can be done using Pattern.matcher(). 
+        // ReGex to numbers from 0 to 255
+zeroTo255 -> (\\d{1, 2}|(0|1)\\d{2}|2[0-4]\\d|25[0-5])
+
+// ReGex to validate complete IP address
+IPAddress -> zeroTo255 + "\\." + zeroTo255 
+                + "\\." + zeroTo255 
+                + "\\." + zeroTo255;
+        */
+        String zeroTo255
+            = "(\\d{1,2}|(0|1)\\"
+              + "d{2}|2[0-4]\\d|25[0-5])";
+ 
+        // Regex for a digit from 0 to 255 and
+        // followed by a dot, repeat 4 times.
+        // this is the regex to validate an IP address.
+        String pattern
+            = zeroTo255 + "\\."
+              + zeroTo255 + "\\."
+              + zeroTo255 + "\\."
+              + zeroTo255;
+ 
+}
