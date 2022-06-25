@@ -1,0 +1,12 @@
+import java.util.*;
+import java.util.stream.*;
+
+public class GFG {
+    public static void main(String[] args) {
+        
+        System.out.println(factorialStreams(3));
+    }
+    public static long factorialStreams(long n) {
+        return LongStream.rangeClosed(2, n).reduce(1,(long a, long b) -> a * b);
+   }  
+}

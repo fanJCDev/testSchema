@@ -1,0 +1,22 @@
+import java.util.*;
+import java.util.stream.*;
+
+public class GFG {
+    public static void main(String[] args) {
+        
+        System.out.println(IsArmestrung(153));
+
+    }
+
+    public static boolean IsArmestrung(int n){
+        int temp, digits=0, last=0, sum=0;
+        temp=n;
+        String number = String.valueOf(temp);
+        digits=(temp>0)?number.length():0;
+        for(int i = 0; i < digits; i++) {
+            int j = Character.digit(number.charAt(i), 10);
+            sum +=  (Math.pow(j, digits));
+        }
+        return (n==sum)?true:false;
+   }  
+}

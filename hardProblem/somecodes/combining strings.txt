@@ -1,0 +1,16 @@
+import java.util.*;
+  
+public class GFG {
+    public static void main(String[] args)
+    {
+        String[] array = { "Geeks", "for", "Geeks" };
+        Optional<String> tmp = Arrays.stream(array)
+                                           .reduce((str1, str2)
+                                           -> str1 + str2);
+  
+        // Displaying the combined String
+        if (tmp.isPresent()) {
+            System.out.println(tmp.get());
+        }
+    }
+}

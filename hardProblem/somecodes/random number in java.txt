@@ -1,0 +1,23 @@
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;   
+
+  
+public class GFG {
+    public static void main(String[] args)
+    {
+        System.out.println("1st Random Number: " + Math.random());
+        // Generates random integers 0 to 999
+        /*
+        nextInt(int bound)
+        nextInt()
+        nextFloat()
+        nextDouble()
+        nextLong()
+        nextBoolean()
+        */
+        Random random = new Random();   
+        int y = random.nextInt(1000);
+        System.out.println(y);
+        System.out.println(ThreadLocalRandom.current().nextInt(1000));
+    }
+}

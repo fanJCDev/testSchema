@@ -1,0 +1,119 @@
+// Java program for the above approach
+import java.util.*;
+
+class GFG
+{
+
+static int MAX = 1000000;
+
+// Function to calculate count of
+// distinct prime factors of a number
+static void countOfPrimefactors(int[] CountDistinct)
+{
+	boolean[] prime = new boolean[MAX + 1];
+
+	for (int i = 0; i <= MAX; i++) {
+	CountDistinct[i] = 0;
+	prime[i] = true;
+	}
+
+	// Seive of Eratosthenes
+	for (int i = 2; i <= MAX; i++) {
+
+	if (prime[i] == true) {
+		CountDistinct[i] = 1;
+
+		for (int j = i * 2; j <= MAX;
+			j += i) {
+
+		CountDistinct[j]++;
+		prime[j] = false;
+		}
+	}
+	}
+}
+
+// Function to count pairs with even
+// product of distinct prime factors
+static int CountEvenPair(int A[], int B[], int N, int M)
+{
+	// Stores count of
+	// distinct prime factors
+	int[] countDistinct = new int[(MAX + 1)];
+
+	countOfPrimefactors(countDistinct);
+
+	// Stores the count of numbers
+	// with even prime factors in B[]
+	int evenCount = 0;
+
+	// Stores the count of numbers
+	// with odd prime factors in B[]
+	int oddCount = 0;
+
+	// Even Product Pairs
+	int evenPairs = 0;
+
+	// Traverse the array B[]
+	for (int i = 0; i < M; i++) {
+
+	// Since, product has to be
+	// positive i.e > 0
+
+	if (countDistinct[B[i]] == 0)
+		continue;
+
+	// If count of prime factors is odd
+	if ((countDistinct[B[i]] & 1) != 0) {
+
+		// Increment oddCount by 1
+		oddCount++;
+	}
+	else {
+
+		// Increment evenCount by 1
+		evenCount++;
+	}
+	}
+
+	for (int i = 0; i < N; i++) {
+
+	// Since, product has to be
+	// positive i.e > 0
+
+	if (countDistinct[A[i]] == 0)
+		continue;
+
+	// If count of prime factors is odd
+	if ((countDistinct[A[i]] & 1) != 0) {
+
+		// odd * even = even
+		evenPairs += (evenCount);
+	}
+
+	// If count of prime factors is even
+	else {
+
+		// even * odd = even
+		// even * even = even
+		evenPairs += evenCount + oddCount;
+	}
+	}
+	return evenPairs;
+}
+
+
+// Driver Code
+public static void main(String[] args)
+{
+	int A[] = { 1, 2, 3 };
+	int B[] = { 4, 5, 6 };
+
+	int N = A.length;
+	int M = B.length;
+
+	System.out.println(CountEvenPair(A, B, N, M));
+}
+}
+
+// This code is contributed by sanjoy_62.

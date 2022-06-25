@@ -1,0 +1,51 @@
+import java.util.*;
+ 
+public class GFG{
+ 
+// Function to count the desired
+// number of pairs
+static int countPairs(int arr[], int n)
+{
+     
+    // Initialize oneCount
+    int oneCount = 0;
+ 
+    // Initialize the desiredPair
+    int desiredPair = 0;
+ System.out.print(Arrays.toString(arr)+"\n");
+    // Traverse the given array
+    for(int i = 0; i < n; i++)
+    {
+         
+        // If 1 is encountered
+        if (arr[i] == 1)
+        {
+            oneCount++;System.out.println("arr["+i+"]=>"+arr[i]+"--"+oneCount);
+        }
+ 
+        // If 0 is encountered
+        if (arr[i] == 0)
+        {
+             
+            // Update count of pairs
+            desiredPair += oneCount;System.out.println("arr["+i+"]=>"+arr[i]+"**"+desiredPair);
+        }
+    }
+ 
+    // Return the final count
+    return desiredPair;
+}
+ 
+// Driver Code
+public static void main(String[] args)
+{
+     
+    // Given array arr[]
+    int arr[] = { 2, 0, 1, 1, 14, 0, 9, 0 };
+    int N = arr.length;
+ 
+    // Function call
+    System.out.println(countPairs(arr, N));
+}
+}
+ 
